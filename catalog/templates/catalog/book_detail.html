@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Title: {{ book.title }}</h1>
+
+  <p><strong>Author:</strong> <a href="{% url 'author-detail' book.author.pk %}">{{ book.author }}</a></p>
+  <p><strong>Summary:</strong> {{ book.summary }}</p>
+  <p><strong>Publication Year:</strong> {{ book.pub_year }}</p>  
+  <p><strong>Language:</strong> {{ book.get_language_display }}</p>  
+  <p><strong>Genre:</strong> {% for genre in book.genre.all %} {{ genre }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>  
+  
+  {% ifequal book.condition 'g' %}
+  <p><strong>Condition:</strong>   <span style="color:green;font-weight: bold;">{{ book.get_condition_display }}</span> </p>  
+  {% endifequal %}
+  {% ifequal book.condition 'b' %}
+  <p><strong>Condition:</strong>   <span style="color:red;font-weight: bold;">{{ book.get_condition_display }}</span> </p>  
+  {% endifequal %}
+  {% ifequal book.condition 'f' %}
+  <p><strong>Condition:</strong>   <span style="color:yellow;font-weight: bold;">{{ book.get_condition_display }}</span> </p>  
+  {% endifequal %}
+
+  {% ifnotequal book.url '#' %}
+  <p><a href="{{book.url }}"> Read Online</a></p>
+  {% endifnotequal %}
+
+
+
+
+    {% endblock %}
