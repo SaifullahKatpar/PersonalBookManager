@@ -34,12 +34,14 @@ class Book(models.Model):
     language = models.CharField(max_length=1,choices = LANGUAGES,blank=True, default='s')
     
     summary = models.TextField(max_length=1000, help_text='Enter a brief description of the book')
+    YEAR_CHOICES = [(r,r) for r in range(1800, datetime.date.today().year+1)]
+    pub_year = models.IntegerField(('year'), choices=YEAR_CHOICES, default=datetime.datetime.now().year)
     # ManyToManyField used because genre can contain many books. Books can cover many genres.
     # Genre class has already been defined so we can specify the object above.
     genre = models.ManyToManyField(Genre, help_text='Select a genre for this book')
     condition = models.CharField(max_length=1,choices = CONDITIONS,blank=True, default='g')
     class Meta:
-        ordering = ['title']
+        ordering = ['title','-pub_year']
 
     def __str__(self):
         """String for representing the Model object."""

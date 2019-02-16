@@ -5,7 +5,7 @@
 
   <p><strong>Author:</strong> <a href="{% url 'author-detail' book.author.pk %}">{{ book.author }}</a></p>
   <p><strong>Summary:</strong> {{ book.summary }}</p>
-<!--  <p><strong>Publication Year:</strong> {{ book.pub_year }}</p>  -->
+  <p><strong>Publication Year:</strong> {{ book.pub_year }}</p>  
   <p><strong>Language:</strong> {{ book.get_language_display }}</p>  
   <p><strong>Genre:</strong> {% for genre in book.genre.all %} {{ genre }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>  
   
