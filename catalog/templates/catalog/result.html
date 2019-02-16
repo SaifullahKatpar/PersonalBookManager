@@ -1,0 +1,42 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<form method="get">
+  {{ filter.form|crispy }}
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
+<ul>
+{% for book in filter.qs %}
+  <li>{{ book.title }}</li>
+{% endfor %}
+</ul>
+<!--
+{% if q %}
+<h1>Search Results for "{{q}}"</h1>
+{% endif %}
+  {% if book_list %}
+  <ul>
+    {% for book in book_list %}
+      <li>
+        <a href="{{ book.get_absolute_url }}">{{ book.title }}</a> ({{book.author}})
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}       
+
+  {% if author_list %}
+  <ul>
+    {% for author in author_list %}
+      <li>
+        <a href="{{ auhtor.get_absolute_url }}">{{ author.last_name }}</a> ({{author.date_of_birth}} - {% if author.date_of_death %}{{author.date_of_death}}{% endif %})
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+
+-->
+  
+{% endblock %}

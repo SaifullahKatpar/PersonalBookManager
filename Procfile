@@ -1,0 +1,1 @@
+web: gunicorn personal_book_manager.wsgi --log-file -

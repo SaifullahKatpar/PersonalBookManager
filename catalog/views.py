@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from catalog.models import Book, Author
-
 from django.views import generic
 
 def index(request):
@@ -33,3 +32,21 @@ class AuthorListView(generic.ListView):
 
 class AuthorDetailView(generic.DetailView):
     model = Author
+
+from django.views import View
+
+
+from .filters import BookFilter
+
+class SearchListView(generic.ListView):
+    model = Book
+    template_name = "catalog/result.html"
+
+    def get_context_data(self,**kwargs):
+        context = super.get_context_data(**kwargs)
+        context['filter'] = BookFilter(self.request.GET,queryset=self.get_queryset())
+        return context
+def search(request):
+    book_list = Book.objects.all()
+    book_filter = BookFilter(request.GET, queryset=book_list)
+    return render(request, 'catalog/result.html', {'filter': book_filter})
