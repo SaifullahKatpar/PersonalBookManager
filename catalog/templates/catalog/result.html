@@ -7,15 +7,13 @@
   {{ filter.form|crispy }}
   <button type="submit" class="btn btn-primary">Search</button>
 </form>
+<!--
 <ul>
 {% for book in filter.qs %}
   <li>{{ book.title }}</li>
 {% endfor %}
 </ul>
-<!--
-{% if q %}
-<h1>Search Results for "{{q}}"</h1>
-{% endif %}
+-->
   {% if book_list %}
   <ul>
     {% for book in book_list %}
@@ -25,7 +23,7 @@
     {% endfor %}
   </ul>
   {% endif %}       
-
+<!--
   {% if author_list %}
   <ul>
     {% for author in author_list %}
