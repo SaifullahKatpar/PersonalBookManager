@@ -1,5 +1,5 @@
 from django.contrib import admin
-from catalog.models import Author, Genre, Book
+from catalog.models import Author, Genre, Book, ReadingList
 
 
 class AuthorAdmin(admin.ModelAdmin):
@@ -11,3 +11,17 @@ class BookAdmin(admin.ModelAdmin):
 admin.site.register(Book,BookAdmin)
 admin.site.register(Author,AuthorAdmin)
 admin.site.register(Genre)
+
+@admin.register(ReadingList)
+class ReadingListAdmin(admin.ModelAdmin):
+    list_display = ('book', 'status', 'reader')
+    list_filter = ('book',)
+    
+    fieldsets = (
+        (None, {
+            'fields': ('book',)
+        }),
+        ('Reading', {
+            'fields': ('status','reader',)
+        }),
+    )

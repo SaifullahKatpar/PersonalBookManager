@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.contrib.auth.models import User    
+from datetime import date, timedelta
 # Create your models here.
 class Genre(models.Model):
     """Model representing a book genre."""
@@ -40,6 +41,14 @@ class Book(models.Model):
     # Genre class has already been defined so we can specify the object above.
     genre = models.ManyToManyField(Genre, help_text='Select a genre for this book')
     condition = models.CharField(max_length=1,choices = CONDITIONS,blank=True, default='g')
+    pur_date = models.DateField(null=True, blank=True)
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+
+    @property
+    def is_new(self):
+        if self.pur_date and self.pur_date+ timedelta(days=30) >= date.today()  :
+            return True
+        return False
     class Meta:
         ordering = ['title','-pub_year']
 
@@ -74,4 +83,46 @@ class Author(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.last_name}, {self.first_name}'
-        
+
+class ReadingList(models.Model):
+    book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True)
+    reader = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    @property
+    def is_reading(self):
+        if self.status=='r':
+            return True
+        return False
+    @property
+    def is_completed(self):
+        if self.status=='c':
+            return True
+        return False
+    @property
+    def is_wish(self):
+        if self.status=='w':
+            return True
+        return False
+
+
+    STATUS = (
+        ('r', 'Reading'),
+        ('c', 'Completed'),
+        ('w', 'Wish List'),
+    )
+
+    status = models.CharField(
+        max_length=1,
+        choices=STATUS,
+        blank=True,
+        default='w',
+        help_text='Reading List')
+
+    class Meta:
+        ordering = ['book']
+
+    def __str__(self):
+        """String for representing the Model object."""
+        return '{0} ({1})'.format(self.id, self.book.title)
+
+
+

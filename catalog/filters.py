@@ -9,6 +9,7 @@ class BookFilter(django_filters.FilterSet):
             'author':['exact',],
             'summary':['icontains',],
             'pub_year':['exact',],
+            'owner':['exact',],
             'condition':['exact',],
             'language':['exact',],
             'genre':['contains',],

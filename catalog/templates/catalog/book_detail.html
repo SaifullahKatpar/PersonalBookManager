@@ -24,14 +24,17 @@
       </div>
       <div class="card-footer">
        <p class="card-text">  This book was published in {{book.pub_year}}.</p>
+       {% if book.owner %}
+       <p class="card-text">  This book was purchased by {{book.owner}} {% if book.pur_date %} on {{book.pur_date}}{%endif%}.</p>
+       {% endif %}
        {% ifequal book.condition 'g' %}
-       <p class="card-text">Condition: <span class="badge badge-success">{{ book.get_condition_display }}</span></p>  
+       <p class="card-text">Condition: <span class="badge badge-success">{{ book.get_condition_display|capfirst }}</span></p>  
        {% endifequal %}
        {% ifequal book.condition 'b' %}
-       <p class="card-text">Condition: <span class="badge badge-danger">{{ book.get_condition_display }}</span></p>  
+       <p class="card-text">Condition: <span class="badge badge-danger">{{ book.get_condition_display|capfirst }}</span></p>  
        {% endifequal %}
        {% ifequal book.condition 'f' %}
-       <p class="card-text">Condition: <span class="badge badge-warning">{{ book.get_condition_display }}</span></p>  
+       <p class="card-text">Condition: <span class="badge badge-warning">{{ book.get_condition_display|capfirst }}</span></p>  
        {% endifequal %}
      
      

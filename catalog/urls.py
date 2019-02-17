@@ -15,3 +15,11 @@ urlpatterns = [
     path('authors/', views.AuthorListView.as_view(), name='authors'),
     re_path(r'^author/(?P<pk>\d+)$', views.AuthorDetailView.as_view(), name='author-detail'),
     ]
+
+urlpatterns += [   
+    path('mybooks/', views.ReadingListView.as_view(), name='reading_list'),
+]
+
+urlpatterns += [   
+    path('newbooks/', views.NewBooksListView.as_view(), name='new_arrivals'),
+]
