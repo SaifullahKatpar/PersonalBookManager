@@ -10,10 +10,12 @@ def index(request):
     
     # The 'all()' is implied by default.    
     num_authors = Author.objects.count()
-    
+
+    num_genres = Book.objects.all().aggregate(Count('genre',distinct=True)  
     context = {
         'num_books': num_books,
         'num_authors': num_authors,
+        'num_genres': num_genres,
     }
 
     # Render the HTML template index.html with the data in the context variable
