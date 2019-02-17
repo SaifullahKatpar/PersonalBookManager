@@ -23,3 +23,10 @@ urlpatterns += [
 urlpatterns += [   
     path('newbooks/', views.NewBooksListView.as_view(), name='new_arrivals'),
 ]
+
+urlpatterns += [   
+    path('add_book/', views.add_book, name='add_book'),
+    path('add_author/', views.add_author, name='add_author'),
+    path('add_genre/', views.add_genre, name='add_genre'),
+]
+

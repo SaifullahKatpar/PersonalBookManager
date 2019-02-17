@@ -1,6 +1,19 @@
-from django import forms
+from django.forms import ModelForm
+from catalog.models import Book,Author,Genre
 
-class SearchForm(forms.Form):
-    search = forms.CharField(label='',widget=forms.TextInput(attrs={'id': 'search', 'placeholder':'Search Books and Authors'}))
-    search_by = forms.ChoiceField(choices=['Author','Book','Year','Language','Condition'])
-    
+class AuthorForm(ModelForm):
+    class Meta:
+        model = Author
+        fields = ['first_name','last_name', 'date_of_birth','date_of_death']
+
+
+class GenreForm(ModelForm):
+    class Meta:
+        model = Genre
+        fields = ['name']
+
+class BookForm(ModelForm):
+    class Meta:
+        model = Book
+        fields = ['title', 'author','language','pub_year','condition','pur_date','genre','summary']
+

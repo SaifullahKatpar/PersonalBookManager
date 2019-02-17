@@ -72,3 +72,61 @@ class NewBooksListView(LoginRequiredMixin,generic.ListView):
     
     def get_queryset(self):
         return Book.objects.all()
+
+
+
+from django.shortcuts import render, redirect
+from django import forms
+from django.utils import timezone
+from catalog.forms import BookForm,AuthorForm,GenreForm
+
+def add_book(request):
+     
+    if request.method == "POST":
+        form = BookForm(request.POST)
+
+        if form.is_valid():
+            model_instance = form.save(commit=False)
+            model_instance.timestamp = timezone.now()
+            model_instance.save()
+            return redirect('/')
+ 
+    else:
+ 
+        form = BookForm()
+ 
+        return render(request, "catalog/add_book.html", {'form': form})
+
+
+
+def add_author(request):
+     
+    if request.method == "POST":
+        form = AuthorForm(request.POST)
+        if form.is_valid():
+            model_instance = form.save(commit=False)
+            model_instance.timestamp = timezone.now()
+            model_instance.save()
+            return redirect('/')
+ 
+    else:
+ 
+        form = AuthorForm()
+ 
+        return render(request, "catalog/add_author.html", {'form': form})
+
+def add_genre(request):
+     
+    if request.method == "POST":
+        form = GenreForm(request.POST)
+        if form.is_valid():
+            model_instance = form.save(commit=False)
+            model_instance.timestamp = timezone.now()
+            model_instance.save()
+            return redirect('/')
+ 
+    else:
+ 
+        form = GenreForm()
+ 
+        return render(request, "catalog/add_genre.html", {'form': form})

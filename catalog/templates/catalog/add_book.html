@@ -1,0 +1,42 @@
+{% extends "base_generic.html" %}
+{% load widget_tweaks %}
+{% block content %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-dark">
+      <li class="breadcrumb-item"><a href="{% url 'index' %}" class="text-white">Home</a></li>
+      <li class="breadcrumb-item text-white active" aria-current="page">Add Book</li>
+    </ol>
+</nav>
+
+<form method="post" action="{% url 'add_book' %}">
+    {% csrf_token %}
+    <div class="well">
+      <h4 style="margin-top: 0">Search</h4>
+      <div class="row">
+          {% for field in form.visible_fields %}
+          <div class="form-group col-sm-2">
+              
+                {% ifequal field.label 'Pur date' %}
+                <label for="{{ field.id_for_label }}">Purchasing Date</label>
+                {% else %}             
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {% endifequal %} 
+                {{ field|add_class:'form-control ' }}
+                {% ifequal field.label 'Author' %}
+                <a href="{% url 'add_author'%}" target="popup" onclick="window.open('{% url 'add_author' %}','name','width=600,height=400')">Add Author</a>
+                {% endifequal %} 
+                {% ifequal field.label 'Genre' %}
+                <a href="{% url 'add_genre'%}" target="popup" onclick="window.open('{% url 'add_genre' %}','name','width=600,height=400')">Add Genre</a>
+                {% endifequal %}    
+                    
+          </div>
+        {% endfor %}    
+      </div>
+      <button type="submit" class="btn btn-dark">Add Book</button>
+  
+    </div>
+  </form>
+
+
+{% endblock %}
