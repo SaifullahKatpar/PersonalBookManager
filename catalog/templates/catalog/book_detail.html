@@ -1,23 +1,53 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>Title: {{ book.title }}</h1>
 
-  <p><strong>Author:</strong> <a href="{% url 'author-detail' book.author.pk %}">{{ book.author }}</a></p>
-  <p><strong>Summary:</strong> {{ book.summary }}</p>
-  <p><strong>Publication Year:</strong> {{ book.pub_year }}</p>  
-  <p><strong>Language:</strong> {{ book.get_language_display }}</p>  
-  <p><strong>Genre:</strong> {% for genre in book.genre.all %} {{ genre }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>  
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-dark">
+      <li class="breadcrumb-item "><a href="{% url 'index' %}" class="text-white">Home</a></li>
+      <li class="breadcrumb-item "><a href="{% url 'books' %}" class="text-white">Books</a></li>
+      <li class="breadcrumb-item active text-white" aria-current="page">{{book.title}}</li>
+    </ol>
+  </nav>
+  <div class="card" style="width: 50rem;">
+      <div class="card-body">
+          <div class="d-flex w-100 justify-content-between">
+              <h2 class="card-title">{{book.title}}</h2>
+              <small class="text-warning"><strong>{{book.get_language_display}}</strong></small>
+          </div>
+
+          <h6 class="card-subtitle mb-2 text-muted"><a href="{% url 'author-detail' book.author.pk %}" class="card-link">{{book.author}}</a></h6>
+          <p class="card-text" style="text-align:justify;">{{book.summary}}</p>
+          {% for genre in book.genre.all %}
+          <span class="badge badge-info">{{genre}}</span>      
+        {% endfor %}
+      </div>
+      <div class="card-footer">
+       <p class="card-text">  This book was published in {{book.pub_year}}.</p>
+       {% ifequal book.condition 'g' %}
+       <p class="card-text">Condition: <span class="badge badge-success">{{ book.get_condition_display }}</span></p>  
+       {% endifequal %}
+       {% ifequal book.condition 'b' %}
+       <p class="card-text">Condition: <span class="badge badge-danger">{{ book.get_condition_display }}</span></p>  
+       {% endifequal %}
+       {% ifequal book.condition 'f' %}
+       <p class="card-text">Condition: <span class="badge badge-warning">{{ book.get_condition_display }}</span></p>  
+       {% endifequal %}
+     
+     
+     
+      </div>    
+      </div>
   
-  {% ifequal book.condition 'g' %}
-  <p><strong>Condition:</strong>   <span style="color:green;font-weight: bold;">{{ book.get_condition_display }}</span> </p>  
-  {% endifequal %}
-  {% ifequal book.condition 'b' %}
-  <p><strong>Condition:</strong>   <span style="color:red;font-weight: bold;">{{ book.get_condition_display }}</span> </p>  
-  {% endifequal %}
-  {% ifequal book.condition 'f' %}
-  <p><strong>Condition:</strong>   <span style="color:yellow;font-weight: bold;">{{ book.get_condition_display }}</span> </p>  
-  {% endifequal %}
+
+
+
+    
+
+
+
+
+
 
 
 

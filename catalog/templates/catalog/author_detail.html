@@ -1,6 +1,14 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-dark">
+      <li class="breadcrumb-item"><a href="{% url 'index' %}" class="text-white">Home</a></li>
+      <li class="breadcrumb-item text-white"><a href="{% url 'authors' %}" class="text-white">Books</a></li>
+      <li class="breadcrumb-item active text-white" aria-current="page">{{author.first_name}}</li>
+    </ol>
+  </nav>
+
 
 <h1>Author: {{ author }} </h1>
 <p>{{author.date_of_birth}} - {% if author.date_of_death %}{{author.date_of_death}}{% endif %}</p>

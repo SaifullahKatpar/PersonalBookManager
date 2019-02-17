@@ -10,17 +10,40 @@
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
-<body>
-  <div class="container-fluid">
+<div class="container-fluid">
+  <body class="bg-light">
     <div class="row">
-      <div class="col-sm-2">
+      <div class="col-sm-2 bg-dark" style="min-height:800px;">
       {% block sidebar %}
-        <ul class="sidebar-nav">
-          <li><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="{% url 'books' %}">All books</a></li>
-          <li><a href="{% url 'authors' %}">All authors</a></li>
-          <br>
-          <li><a href="{% url 'search' %}">Search</a></li>
+        <ul class="sidebar-nav list-group">
+          <li class="list-group-item bg-light">
+              <h6 class="card-subtitle mb-2 text-muted">            
+            <a href="{% url 'index' %}" class="card-link">
+                Home
+            </a>
+            </h6>
+          </li>
+          <li class="list-group-item bg-light">
+              <h6 class="card-subtitle mb-2 text-muted">            
+            <a href="{% url 'books' %}" class="card-link">
+                Books
+            </a>
+            </h6>
+          </li>
+          <li class="list-group-item bg-light">
+              <h6 class="card-subtitle mb-2 text-muted">            
+            <a href="{% url 'authors' %}" class="card-link">
+                Authors
+            </a>
+            </h6>
+          </li>
+          <li class="list-group-item bg-light">
+              <h6 class="card-subtitle mb-2 text-muted">            
+            <a href="{% url 'search' %}" class="card-link">
+                Search
+            </a>
+            </h6>
+          </li>
         </ul>
      {% endblock %}
      {% block pagination %}
