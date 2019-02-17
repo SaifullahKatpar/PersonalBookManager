@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from catalog.models import Book, Author
 from django.views import generic
-
+from django.db.models import Count
 def index(request):
     """View function for home page of site."""
 
@@ -11,7 +11,7 @@ def index(request):
     # The 'all()' is implied by default.    
     num_authors = Author.objects.count()
 
-    num_genres = Book.objects.all().aggregate(Count('genre',distinct=True)  
+    num_genres = Book.objects.all().aggregate(Count('genre',distinct=True))  
     context = {
         'num_books': num_books,
         'num_authors': num_authors,
