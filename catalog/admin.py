@@ -1,5 +1,5 @@
 from django.contrib import admin
-from catalog.models import Author, Genre, Book, ReadingList
+from catalog.models import Author, Genre, Book, ReadingList,Language
 
 
 class AuthorAdmin(admin.ModelAdmin):
@@ -11,6 +11,7 @@ class BookAdmin(admin.ModelAdmin):
 admin.site.register(Book,BookAdmin)
 admin.site.register(Author,AuthorAdmin)
 admin.site.register(Genre)
+admin.site.register(Language)
 
 @admin.register(ReadingList)
 class ReadingListAdmin(admin.ModelAdmin):
