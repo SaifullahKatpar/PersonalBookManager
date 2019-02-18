@@ -4,23 +4,26 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-dark">
       <li class="breadcrumb-item"><a href="{% url 'index' %}" class="text-white">Home</a></li>
-      <li class="breadcrumb-item text-white"><a href="{% url 'authors' %}" class="text-white">Books</a></li>
+      <li class="breadcrumb-item text-white"><a href="{% url 'authors' %}" class="text-white">Authors</a></li>
       <li class="breadcrumb-item active text-white" aria-current="page">{{author.first_name}}</li>
     </ol>
   </nav>
 
+  <div class="card">
+    <div class="card-body">
+        <div class="d-flex w-100 justify-content-between">
+            <h2 class="card-title">{{author}}</h2>
+            <small class="text-info">{% if author.date_of_birth %} Born: {{author.date_of_birth}} - {% endif %}{% if author.date_of_death %}Died:{{author.date_of_death}}{% endif %}</small>
+        </div>
 
-<h1>Author: {{ author }} </h1>
-<p>{% if author.date_of_birth %} {{author.date_of_birth}} - {% endif %}{% if author.date_of_death %}{{author.date_of_death}}{% endif %}</p>
-
-<div style="margin-left:20px;margin-top:20px">
-<h4>Books</h4>
-<dl>
-{% for book in author.book_set.all %}
-  <dt><a href="{% url 'book-detail' book.pk %}">{{book}}</a></dt>
-  <dd>{{book.summary}}</dd>
-{% endfor %}
-</dl>
-
+        <h5 class="card-subtitle mb-2">Books</h5>
+        <dl>
+          {% for book in books %}
+            <dt><a href="{% url 'book-detail' book.pk %}">{{book}}</a> <small>{% ifequal book.translator author %}(Translation to {{book.translation}}){% endifequal%}</small></dt>
+            <dd>{{book.summary}}</dd>
+          {% endfor %}
+          </dl>
+              </div>
 </div>
+
 {% endblock %}

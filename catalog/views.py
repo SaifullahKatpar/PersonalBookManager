@@ -40,11 +40,17 @@ class AuthorListView(generic.ListView):
 
 class AuthorDetailView(generic.DetailView):
     model = Author
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['books'] = Book.objects.filter(author=self.object.pk) | Book.objects.filter(translator=self.object.pk)
+
+            return context
 
 from django.views import View
 
 
 from .filters import BookFilter
+
 
 class SearchListView(generic.ListView):
     model = Book
@@ -68,13 +74,16 @@ class ReadingListView(LoginRequiredMixin,generic.ListView):
     def get_queryset(self):
         return ReadingList.objects.filter(reader=self.request.user)
 
+from datetime import date, timedelta
+
 class NewBooksListView(LoginRequiredMixin,generic.ListView):
     """Generic class-based view listing books on loan to current user."""
     model = Book
     template_name ='catalog/new_arrivals.html'
     paginate_by = 10
     
-    def get_queryset(self):
+
+    def get_queryset(self):        
         return Book.objects.all()
 
 

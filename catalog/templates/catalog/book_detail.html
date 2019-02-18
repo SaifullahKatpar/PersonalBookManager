@@ -49,7 +49,7 @@
   {% if user.is_authenticated %}
 
 
-  <div class="row" id="wish_list_div" style="display:none;">
+  <div class="row" id="wish_list_div">
       <div class="col-sm-2">
         <form method="get">
             <input type="number" name="id_book" id="id_book" value="{{book.id}}" style="display:none;">                   
@@ -58,7 +58,7 @@
           </form>      
       </div>
     </div>
-    <div class="row" id="reading_div" style="display:none;">
+    <div class="row" id="reading_div" >
         <div class="col-sm-2">
           <form method="get">
               <input type="number" name="id_book" id="id_book" value="{{book.id}}" style="display:none;">                   
@@ -67,7 +67,7 @@
             </form>      
         </div>
       </div>
-      <div class="row" id="completed_div" style="display:none;">
+      <div class="row" id="completed_div">
           <div class="col-sm-2">
             <form method="get">
                 <input type="number" name="id_book" id="id_book" value="{{book.id}}" style="display:none;">                   
@@ -94,11 +94,19 @@
           dataType: 'json',
           success: function (data) {
               if(data['status']=='w'){
-                $("#completed_div").css('display','block');
-                $("#reading_div").css('display','block');
+                $("#wish_list_div").css('display','none');
               }
               else if(data['status']=='r'){
-                $("#completed_div").css('display','block');
+                $("#wish_list_div").css('display','none');
+                $("#reading_div").css('display','none');
+              }
+              else if(data['status']=='c'){
+                $("#wish_list_div").css('display','none');
+                $("#reading_div").css('display','none');
+                $("#completed_div").css('display','none');
+
+              }
+              else{
               }
           }
         });
