@@ -1,8 +1,12 @@
 from django.shortcuts import render
-from catalog.models import Book, Author,ReadingList
+from catalog.models import Book, Author,ReadingList,User
 from django.views import generic
 from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render, redirect
+from django import forms
+from django.utils import timezone
+from catalog.forms import BookForm,AuthorForm,GenreForm,LanguageForm
 
 def index(request):
     """View function for home page of site."""
@@ -75,10 +79,6 @@ class NewBooksListView(LoginRequiredMixin,generic.ListView):
 
 
 
-from django.shortcuts import render, redirect
-from django import forms
-from django.utils import timezone
-from catalog.forms import BookForm,AuthorForm,GenreForm,LanguageForm
 
 def add_book(request):
      
@@ -146,3 +146,104 @@ def add_language(request):
         form = LanguageForm()
  
         return render(request, "catalog/add_language.html", {'form': form})
+
+from django.http import JsonResponse
+
+def add_to_wish_list(request):
+    id_book = request.GET.get('id_book', None)
+    id_user = request.GET.get('id_user', None)
+
+    book_ins = Book.objects.get(id=int(id_book))
+    user_ins = User.objects.get(id=int(id_user))
+    if ReadingList.objects.filter(reader=user_ins,book=book_ins).exists():
+        data = {
+            'status': 'Already in Wish List!'
+            }
+    elif ReadingList.objects.filter(reader=user_ins,book=book_ins,status='c').exists():
+        data = {
+            'status': 'Already Completed!'
+            }
+    elif ReadingList.objects.filter(reader=user_ins,book=book_ins,status='r').exists():
+        data = {
+            'status': 'Already Reading!'
+            }
+
+    else:
+        item = ReadingList(reader=user_ins,book=book_ins,status='w')
+        item.save()
+        added = len(ReadingList.objects.filter(book=book_ins,reader=user_ins))!=0
+
+        data = {
+            'status': 'Added to Wish List!'
+            }
+    return JsonResponse(data)
+
+def add_to_reading(request):
+    id_book = request.GET.get('id_book', None)
+    id_user = request.GET.get('id_user', None)
+
+    book_ins = Book.objects.get(id=int(id_book))
+    user_ins = User.objects.get(id=int(id_user))
+
+    if ReadingList.objects.filter(reader=user_ins,book=book_ins,status='r').exists():
+        data = {
+            'status': 'Already Reading!'
+            }
+    elif ReadingList.objects.filter(reader=user_ins,book=book_ins,status='c').exists():
+        data = {
+            'status': 'Already Completed!'
+            }
+    else:
+        wish_list_ins = ReadingList.objects.filter(reader=user_ins,book=book_ins,status='w')
+        if wish_list_ins.exists():
+            wish_list_ins.delete()
+        item = ReadingList(reader=user_ins,book=book_ins,status='r')
+        item.save()
+        added = len(ReadingList.objects.filter(book=book_ins,reader=user_ins))!=0
+
+        data = {
+            'status': 'Added to Reading List!'
+            }
+    return JsonResponse(data)
+
+def add_to_completed(request):    
+    id_book = request.GET.get('id_book', None)
+    id_user = request.GET.get('id_user', None)
+
+    book_ins = Book.objects.get(id=int(id_book))
+    user_ins = User.objects.get(id=int(id_user))
+
+    if ReadingList.objects.filter(reader=user_ins,book=book_ins).exists():
+        data = {
+            'status': 'Already Completed!'
+            }
+    else:
+        wish_list_ins = ReadingList.objects.filter(reader=user_ins,book=book_ins,status='w')
+        if wish_list_ins.exists():
+            wish_list_ins.delete()
+        completed_ins = ReadingList.objects.filter(reader=user_ins,book=book_ins,status='c')
+        if completed_ins.exists():
+            completed_ins.delete()
+
+        item = ReadingList(reader=user_ins,book=book_ins,status='c')
+        item.save()
+        added = len(ReadingList.objects.filter(book=book_ins,reader=user_ins))!=0
+
+        data = {
+            'status': 'Added to Completed!'
+            }
+    return JsonResponse(data)
+
+def check_status(request):    
+    id_book = request.GET.get('id_book', None)
+    id_user = request.GET.get('id_user', None)
+    book_ins = Book.objects.get(id=int(id_book))
+    user_ins = User.objects.get(id=int(id_user))
+
+    list_ins = ReadingList.objects.get(reader=user_ins,book=book_ins)
+    if list_ins:
+        data = {
+            'status': list_ins.status
+            }
+    return JsonResponse(data)
+

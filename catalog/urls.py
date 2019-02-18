@@ -32,3 +32,9 @@ urlpatterns += [
     path('add_language/', views.add_language, name='add_language'),
 ]
 
+urlpatterns += [
+    path('add_to_wish_list/', views.add_to_wish_list, name='add_to_wish_list'),
+    path('add_to_reading/', views.add_to_reading, name='add_to_reading'),
+    path('add_to_completed/', views.add_to_completed, name='add_to_completed'),
+    path('check_status/', views.check_status, name='check_status'),
+]

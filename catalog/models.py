@@ -46,7 +46,6 @@ class Book(models.Model):
         return False
     class Meta:
         ordering = ['title','-pub_year']
-        
 
     def __str__(self):
         """String for representing the Model object."""
@@ -68,7 +67,6 @@ class Author(models.Model):
     last_name = models.CharField(max_length=100)
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_death = models.DateField('Died', null=True, blank=True)
-
     class Meta:
         ordering = ['first_name','last_name']
     

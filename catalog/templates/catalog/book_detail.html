@@ -9,50 +9,161 @@
       <li class="breadcrumb-item active text-white" aria-current="page">{{book.title}}</li>
     </ol>
   </nav>
-  <div class="card" style="width: 50rem;">
+
+  <div class="card">
       <div class="card-body">
           <div class="d-flex w-100 justify-content-between">
               <h2 class="card-title">{{book.title}}</h2>
-              <small class="text-warning"><strong>{{book.get_language_display}}</strong>{% if book.translation %}/{{book.translation}}{% endif %}</small>
+              <small class="text-info"><strong>{{book.language}}</strong>{% if book.translation %}/{{book.translation}}{% endif %}</small>
           </div>
 
-          <h6 class="card-subtitle mb-2 text-muted"><a href="{% url 'author-detail' book.author.pk %}" class="card-link">{{book.author}}{% if book.translator %}/{{book.translator}}{% endif %}</a></h6>
-          <p class="card-text" style="text-align:justify;">{{book.summary}}</p>
-          {% for genre in book.genre.all %}
-          <span class="badge badge-info">{{genre}}</span>      
-        {% endfor %}
+          <h5 class="card-subtitle mb-2"><a href="{% url 'author-detail' book.author.pk %}" class="card-link">{{book.author}}</a></h5>
+            {% if book.translator %}
+              <a href="{% url 'author-detail' book.translator.pk %}" class="card-link">{{book.translator}}</a> 
+            {% endif %}          
+            <p class="card-text" style="text-align:justify;">{{book.summary}}</p>
+            {% for genre in book.genre.all %}
+           <span class="badge badge-info">{{genre}}</span>      
+            {% endfor %}
       </div>
+    
       <div class="card-footer">
-       <p class="card-text">  This book was published in {{book.pub_year}}.</p>
-       {% if book.owner %}
-       <p class="card-text">  This book was purchased by {{book.owner}} {% if book.pur_date %} on {{book.pur_date}}{%endif%}.</p>
-       {% endif %}
-       {% ifequal book.condition 'g' %}
-       <p class="card-text">Condition: <span class="badge badge-success">{{ book.get_condition_display|capfirst }}</span></p>  
-       {% endifequal %}
-       {% ifequal book.condition 'b' %}
-       <p class="card-text">Condition: <span class="badge badge-danger">{{ book.get_condition_display|capfirst }}</span></p>  
-       {% endifequal %}
-       {% ifequal book.condition 'f' %}
-       <p class="card-text">Condition: <span class="badge badge-warning">{{ book.get_condition_display|capfirst }}</span></p>  
-       {% endifequal %}
-     
-     
-     
+        <p class="card-text">  This book was published in {{book.pub_year}}.</p>
+        {% if book.owner %}
+        <p class="card-text">  This book was purchased by {{book.owner}} {% if book.pur_date %} on {{book.pur_date}}{%endif%}.</p>
+        {% endif %}
+        {% ifequal book.condition 'g' %}
+        <p class="card-text">Condition: <span class="badge badge-success">{{ book.get_condition_display|capfirst }}</span></p>  
+        {% endifequal %}
+        {% ifequal book.condition 'b' %}
+        <p class="card-text">Condition: <span class="badge badge-danger">{{ book.get_condition_display|capfirst }}</span></p>  
+        {% endifequal %}
+        {% ifequal book.condition 'f' %}
+        <p class="card-text">Condition: <span class="badge badge-warning">{{ book.get_condition_display|capfirst }}</span></p>  
+        {% endifequal %}  
       </div>    
-      </div>
+  </div>
+
   
 
+  {% if user.is_authenticated %}
 
 
-    
+  <div class="row" id="wish_list_div" style="display:none;">
+      <div class="col-sm-2">
+        <form method="get">
+            <input type="number" name="id_book" id="id_book" value="{{book.id}}" style="display:none;">                   
+            <input type="number" name="id_user" id="id_user" value="{{user.id}}" style="display:none;">                   
+            <button type="button" id="wish_list"class="btn btn-info btn-md">Add To Wish List</button>
+          </form>      
+      </div>
+    </div>
+    <div class="row" id="reading_div" style="display:none;">
+        <div class="col-sm-2">
+          <form method="get">
+              <input type="number" name="id_book" id="id_book" value="{{book.id}}" style="display:none;">                   
+              <input type="number" name="id_user" id="id_user" value="{{user.id}}" style="display:none;">                   
+              <button type="button" id="reading_list"class="btn btn-danger btn-md">Add To Reading List</button>
+            </form>      
+        </div>
+      </div>
+      <div class="row" id="completed_div" style="display:none;">
+          <div class="col-sm-2">
+            <form method="get">
+                <input type="number" name="id_book" id="id_book" value="{{book.id}}" style="display:none;">                   
+                <input type="number" name="id_user" id="id_user" value="{{user.id}}" style="display:none;">                   
+                <button type="button" id="wish_list"class="btn btn-success btn-md">Add To Completed</button>
+              </form>      
+          </div>
+        </div>
+      
+  {% endif %}
 
 
+  <script>
+  $( document ).ready(function() {
+        var id_user = $('#id_user').val();
+        var id_book = $('#id_book').val();
+  
+        $.ajax({
+          url: '{% url "check_status" %}',
+          data: {
+            'id_user': id_user,
+            'id_book': id_book,
+          },
+          dataType: 'json',
+          success: function (data) {
+              if(data['status']=='w'){
+                $("#completed_div").css('display','block');
+                $("#reading_div").css('display','block');
+              }
+              else if(data['status']=='r'){
+                $("#completed_div").css('display','block');
+              }
+          }
+        });
+  
+      });
+    </script>
 
 
-
-
-
+  <script>
+      $("#wish_list").click(function () {
+        var id_user = $('#id_user').val();
+        var id_book = $('#id_book').val();
+  
+        $.ajax({
+          url: '{% url "add_to_wish_list" %}',
+          data: {
+            'id_user': id_user,
+            'id_book': id_book,
+          },
+          dataType: 'json',
+          success: function (data) {
+              alert(data['status']);
+          }
+        });
+  
+      });
+    </script>
+  <script>
+      $("#reading_list").click(function () {
+        var id_user = $('#id_user').val();
+        var id_book = $('#id_book').val();
+  
+        $.ajax({
+          url: '{% url "add_to_reading" %}',
+          data: {
+            'id_user': id_user,
+            'id_book': id_book,
+          },
+          dataType: 'json',
+          success: function (data) {
+              alert(data['status']);
+          }
+        });
+  
+      });
+    </script>
+  <script>
+      $("#completed_list").click(function () {
+        var id_user = $('#id_user').val();
+        var id_book = $('#id_book').val();
+  
+        $.ajax({
+          url: '{% url "add_to_completed" %}',
+          data: {
+            'id_user': id_user,
+            'id_book': id_book,
+          },
+          dataType: 'json',
+          success: function (data) {
+              alert(data['status']);
+          }
+        });
+  
+      });
+    </script>
 
 
 
