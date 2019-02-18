@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from catalog.models import Book,Author,Genre
+from catalog.models import Book,Author,Genre,Language
 
 class AuthorForm(ModelForm):
     class Meta:
@@ -15,5 +15,10 @@ class GenreForm(ModelForm):
 class BookForm(ModelForm):
     class Meta:
         model = Book
-        fields = ['title', 'author','language','pub_year','condition','pur_date','genre','summary']
+        fields = ['title', 'author','translator','language','translation','pub_year','condition','pur_date','genre','summary']
 
+
+class LanguageForm(ModelForm):
+    class Meta:
+        model = Language
+        fields = ['name']

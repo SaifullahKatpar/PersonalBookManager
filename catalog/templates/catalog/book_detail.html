@@ -13,10 +13,10 @@
       <div class="card-body">
           <div class="d-flex w-100 justify-content-between">
               <h2 class="card-title">{{book.title}}</h2>
-              <small class="text-warning"><strong>{{book.get_language_display}}</strong></small>
+              <small class="text-warning"><strong>{{book.get_language_display}}</strong>{% if book.translation %}/{{book.translation}}{% endif %}</small>
           </div>
 
-          <h6 class="card-subtitle mb-2 text-muted"><a href="{% url 'author-detail' book.author.pk %}" class="card-link">{{book.author}}</a></h6>
+          <h6 class="card-subtitle mb-2 text-muted"><a href="{% url 'author-detail' book.author.pk %}" class="card-link">{{book.author}}{% if book.translator %}/{{book.translator}}{% endif %}</a></h6>
           <p class="card-text" style="text-align:justify;">{{book.summary}}</p>
           {% for genre in book.genre.all %}
           <span class="badge badge-info">{{genre}}</span>      

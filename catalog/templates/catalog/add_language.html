@@ -1,0 +1,36 @@
+{% extends "base_form.html" %}
+{% load widget_tweaks %}
+{% block content %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-dark">
+      <li class="breadcrumb-item"><a href="{% url 'index' %}" class="text-white">Home</a></li>
+      <li class="breadcrumb-item text-white active" aria-current="page">Add Language</li>
+    </ol>
+</nav>
+<form method="post"  action="{% url 'add_language' %}" id="certform">
+        {% csrf_token %}
+        <div class="well">
+          <h4 style="margin-top: 0">Add Langauge</h4>
+          <div class="row">
+              {% for field in form.visible_fields %}
+              <div class="form-group col-sm-4 col-md-3">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field|add_class:'form-control' }}
+              </div>
+            {% endfor %}    
+          </div>
+          <div><input type="submit"  class="btn btn-dark" value="Upload"/></div>
+      
+        </div>
+      </form>
+      <script>
+            $(document).ready(function () {
+               $('#certform').ajaxForm(function () {
+               window.close();
+               });
+            });
+         </script>      
+      
+      
+{% endblock %}

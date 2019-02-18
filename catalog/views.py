@@ -78,7 +78,7 @@ class NewBooksListView(LoginRequiredMixin,generic.ListView):
 from django.shortcuts import render, redirect
 from django import forms
 from django.utils import timezone
-from catalog.forms import BookForm,AuthorForm,GenreForm
+from catalog.forms import BookForm,AuthorForm,GenreForm,LanguageForm
 
 def add_book(request):
      
@@ -130,3 +130,19 @@ def add_genre(request):
         form = GenreForm()
  
         return render(request, "catalog/add_genre.html", {'form': form})
+
+def add_language(request):
+     
+    if request.method == "POST":
+        form = LanguageForm(request.POST)
+        if form.is_valid():
+            model_instance = form.save(commit=False)
+            model_instance.timestamp = timezone.now()
+            model_instance.save()
+            return redirect('/')
+ 
+    else:
+ 
+        form = LanguageForm()
+ 
+        return render(request, "catalog/add_language.html", {'form': form})

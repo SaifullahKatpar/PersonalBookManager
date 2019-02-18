@@ -4,6 +4,7 @@ from django.urls import include, re_path
 from . import views
 from django_filters.views import FilterView
 from catalog.filters import BookFilter
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -25,8 +26,9 @@ urlpatterns += [
 ]
 
 urlpatterns += [   
-    path('add_book/', views.add_book, name='add_book'),
+    path('add_book/', login_required(views.add_book), name='add_book'),
     path('add_author/', views.add_author, name='add_author'),
     path('add_genre/', views.add_genre, name='add_genre'),
+    path('add_language/', views.add_language, name='add_language'),
 ]
 
