@@ -25,6 +25,12 @@
             {% for genre in book.genre.all %}
            <span class="badge badge-info">{{genre}}</span>      
             {% endfor %}
+            {% if user.is_authenticated %}
+            <span class="badge badge-info" id="wish_badge" style="float:right;display: none;">From Wish List</span>      
+            <span class="badge badge-danger" id="reading_badge" style="float:right;display: none;">Currently Reading</span>      
+            <span class="badge badge-success" id="completed_badge" style="float:right;display: none;">Completed</span>      
+            {% endif%}
+
       </div>
     
       <div class="card-footer">
@@ -94,13 +100,16 @@
           dataType: 'json',
           success: function (data) {
               if(data['status']=='w'){
+                $("#wish_badge").css('display','block');
                 $("#wish_list_div").css('display','none');
               }
               else if(data['status']=='r'){
+                $("#reading_badge").css('display','block');
                 $("#wish_list_div").css('display','none');
                 $("#reading_div").css('display','none');
               }
               else if(data['status']=='c'){
+                $("#completed_badge").css('display','block');
                 $("#wish_list_div").css('display','none');
                 $("#reading_div").css('display','none');
                 $("#completed_div").css('display','none');
@@ -129,6 +138,7 @@
           dataType: 'json',
           success: function (data) {
               alert(data['status']);
+              window.location.reload();
           }
         });
   
@@ -148,6 +158,7 @@
           dataType: 'json',
           success: function (data) {
               alert(data['status']);
+              window.location.reload();
           }
         });
   
@@ -167,6 +178,7 @@
           dataType: 'json',
           success: function (data) {
               alert(data['status']);
+              window.location.reload();
           }
         });
   

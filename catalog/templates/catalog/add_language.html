@@ -28,7 +28,8 @@
             $(document).ready(function () {
                $('#certform').ajaxForm(function () {
                window.close();
-               });
+               window.opener.location.reload();
+                });
             });
          </script>      
       

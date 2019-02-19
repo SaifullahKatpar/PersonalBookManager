@@ -1,8 +1,6 @@
 {% extends "base_form.html" %}
 {% load widget_tweaks %}
 {% block content %}
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
-<script src="http://malsup.github.com/jquery.form.js"></script> 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-dark">
       <li class="breadcrumb-item"><a href="{% url 'index' %}" class="text-white">Home</a></li>
@@ -30,6 +28,7 @@
             $(document).ready(function () {
                $('#certform').ajaxForm(function () {
                window.close();
+               window.opener.location.reload();
                });
             });
          </script>      

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,HttpResponse
 from catalog.models import Book, Author,ReadingList,User
 from django.views import generic
 from django.db.models import Count
@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from django import forms
 from django.utils import timezone
 from catalog.forms import BookForm,AuthorForm,GenreForm,LanguageForm
+
 
 def index(request):
     """View function for home page of site."""
@@ -141,7 +142,7 @@ def add_genre(request):
         return render(request, "catalog/add_genre.html", {'form': form})
 
 def add_language(request):
-     
+    from django.core.exceptions import ValidationError
     if request.method == "POST":
         form = LanguageForm(request.POST)
         if form.is_valid():
@@ -149,11 +150,8 @@ def add_language(request):
             model_instance.timestamp = timezone.now()
             model_instance.save()
             return redirect('/')
- 
-    else:
- 
-        form = LanguageForm()
- 
+    else: 
+        form = LanguageForm() 
         return render(request, "catalog/add_language.html", {'form': form})
 
 from django.http import JsonResponse

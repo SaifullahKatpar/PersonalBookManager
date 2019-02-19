@@ -20,7 +20,7 @@ class GenreForm(ModelForm):
 class BookForm(ModelForm):
     class Meta:
         model = Book
-        fields = ['title', 'author','translator','language','translation','pub_year','condition','pur_date','genre','summary']
+        fields = ['title', 'author','translator','language','translation','pub_year','condition','pur_date','genre','archive','summary']
         widgets = {
             'pur_date': forms.DateInput(attrs={'class':'datepicker'}),
         }
@@ -31,4 +31,10 @@ class LanguageForm(ModelForm):
         model = Language
         fields = ['name']
 
+    def clean_name(self):
+        from django.core.exceptions import ValidationError
+        name = self.cleaned_data['name']
+        if Language.objects.filter(name__iexact=name).exists():
+            raise ValidationError("Already exists!")
+        return name
 
