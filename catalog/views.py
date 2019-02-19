@@ -220,7 +220,7 @@ def add_to_completed(request):
     book_ins = Book.objects.get(id=int(id_book))
     user_ins = User.objects.get(id=int(id_user))
 
-    if ReadingList.objects.filter(reader=user_ins,book=book_ins).exists():
+    if ReadingList.objects.filter(reader=user_ins,book=book_ins,status='w').exists():
         data = {
             'status': 'Already Completed!'
             }
@@ -228,9 +228,9 @@ def add_to_completed(request):
         wish_list_ins = ReadingList.objects.filter(reader=user_ins,book=book_ins,status='w')
         if wish_list_ins.exists():
             wish_list_ins.delete()
-        completed_ins = ReadingList.objects.filter(reader=user_ins,book=book_ins,status='c')
-        if completed_ins.exists():
-            completed_ins.delete()
+        reading_ins = ReadingList.objects.filter(reader=user_ins,book=book_ins,status='r')
+        if reading_ins.exists():
+            reading_ins.delete()
 
         item = ReadingList(reader=user_ins,book=book_ins,status='c')
         item.save()
