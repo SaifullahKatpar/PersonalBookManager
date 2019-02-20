@@ -178,7 +178,6 @@ def add_to_wish_list(request):
     else:
         item = ReadingList(reader=user_ins,book=book_ins,status='w')
         item.save()
-        added = len(ReadingList.objects.filter(book=book_ins,reader=user_ins))!=0
 
         data = {
             'status': 'Added to Wish List!'
@@ -206,7 +205,6 @@ def add_to_reading(request):
             wish_list_ins.delete()
         item = ReadingList(reader=user_ins,book=book_ins,status='r')
         item.save()
-        added = len(ReadingList.objects.filter(book=book_ins,reader=user_ins))!=0
 
         data = {
             'status': 'Added to Reading List!'
@@ -222,23 +220,23 @@ def add_to_completed(request):
 
     if ReadingList.objects.filter(reader=user_ins,book=book_ins,status='w').exists():
         data = {
-            'status': 'Already Completed!'
+            'status': 'You have not read this book!'
             }
-    else:
-        wish_list_ins = ReadingList.objects.filter(reader=user_ins,book=book_ins,status='w')
-        if wish_list_ins.exists():
-            wish_list_ins.delete()
+    elif ReadingList.objects.filter(reader=user_ins,book=book_ins,status='r'):
         reading_ins = ReadingList.objects.filter(reader=user_ins,book=book_ins,status='r')
-        if reading_ins.exists():
-            reading_ins.delete()
+        reading_ins.delete()
 
         item = ReadingList(reader=user_ins,book=book_ins,status='c')
         item.save()
-        added = len(ReadingList.objects.filter(book=book_ins,reader=user_ins))!=0
 
         data = {
             'status': 'Added to Completed!'
             }
+    else:
+        data = {
+            'status': 'No action performed!'
+            }
+
     return JsonResponse(data)
 
 def check_status(request):    
@@ -247,10 +245,14 @@ def check_status(request):
     book_ins = Book.objects.get(id=int(id_book))
     user_ins = User.objects.get(id=int(id_user))
 
-    list_ins = ReadingList.objects.get(reader=user_ins,book=book_ins)
-    if list_ins:
+    if ReadingList.objects.filter(reader=user_ins,book=book_ins).exists():
+        list_ins = ReadingList.objects.get(reader=user_ins,book=book_ins)
         data = {
             'status': list_ins.status
+            }
+    else:
+        data = {
+            'status': 'No Status'
             }
     return JsonResponse(data)
 

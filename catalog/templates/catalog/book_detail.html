@@ -38,6 +38,11 @@
         {% if book.owner %}
         <p class="card-text">  This book was purchased by {{book.owner}} {% if book.pur_date %} on {{book.pur_date}}{%endif%}.</p>
         {% endif %}
+        {% if user.is_authenticated %}
+          {% if book.archive %}
+          <p class="card-text">  This book is in archives now.</p>
+          {% endif%} 
+        {% endif%} 
         {% ifequal book.condition 'g' %}
         <p class="card-text">Condition: <span class="badge badge-success">{{ book.get_condition_display|capfirst }}</span></p>  
         {% endifequal %}
@@ -54,8 +59,7 @@
 
   {% if user.is_authenticated %}
 
-
-  <div class="row" id="wish_list_div">
+  <div class="row" id="wish_list_div" style="display:none">
       <div class="col-sm-2">
         <form method="get">
             <input type="number" name="id_book" id="id_book" value="{{book.id}}" style="display:none;">                   
@@ -64,7 +68,7 @@
           </form>      
       </div>
     </div>
-    <div class="row" id="reading_div" >
+    <div class="row" id="reading_div" style="display:none">
         <div class="col-sm-2">
           <form method="get">
               <input type="number" name="id_book" id="id_book" value="{{book.id}}" style="display:none;">                   
@@ -73,24 +77,23 @@
             </form>      
         </div>
       </div>
-      <div class="row" id="completed_div">
+      <div class="row" id="completed_div" style="display:none">
           <div class="col-sm-2">
             <form method="get">
                 <input type="number" name="id_book" id="id_book" value="{{book.id}}" style="display:none;">                   
                 <input type="number" name="id_user" id="id_user" value="{{user.id}}" style="display:none;">                   
-                <button type="button" id="wish_list"class="btn btn-success btn-md">Add To Completed</button>
+                <button type="button" id="completed_list"class="btn btn-success btn-md">Add To Completed</button>
               </form>      
           </div>
         </div>
       
-  {% endif %}
 
 
   <script>
   $( document ).ready(function() {
         var id_user = $('#id_user').val();
         var id_book = $('#id_book').val();
-  
+    
         $.ajax({
           url: '{% url "check_status" %}',
           data: {
@@ -101,31 +104,33 @@
           success: function (data) {
               if(data['status']=='w'){
                 $("#wish_badge").css('display','block');
-                $("#wish_list_div").css('display','none');
+                $("#reading_div").css('display','block');
+                $("#completed_div").css('display','block');
               }
               else if(data['status']=='r'){
                 $("#reading_badge").css('display','block');
-                $("#wish_list_div").css('display','none');
-                $("#reading_div").css('display','none');
+                $("#completed_div").css('display','block');
               }
               else if(data['status']=='c'){
                 $("#completed_badge").css('display','block');
-                $("#wish_list_div").css('display','none');
-                $("#reading_div").css('display','none');
-                $("#completed_div").css('display','none');
-
               }
               else{
+                $("#wish_list_div").css('display','block');
+                $("#reading_div").css('display','block');
+                $("#completed_div").css('display','block');
+
               }
           }
         });
   
       });
     </script>
-
+{% endif %}
 
   <script>
       $("#wish_list").click(function () {
+        $("#wish_list_div").css('display','none');
+        $("#wish_badge").css('display','block');
         var id_user = $('#id_user').val();
         var id_book = $('#id_book').val();
   
@@ -137,8 +142,7 @@
           },
           dataType: 'json',
           success: function (data) {
-              alert(data['status']);
-              window.location.reload();
+             // alert(data['status']);
           }
         });
   
@@ -146,6 +150,9 @@
     </script>
   <script>
       $("#reading_list").click(function () {
+        $("#reading_div").css('display','none');
+        $("#wish_badge").css('display','none');
+        $("#reading_badge").css('display','block');
         var id_user = $('#id_user').val();
         var id_book = $('#id_book').val();
   
@@ -157,8 +164,7 @@
           },
           dataType: 'json',
           success: function (data) {
-              alert(data['status']);
-              window.location.reload();
+              //alert(data['status']);
           }
         });
   
@@ -166,6 +172,9 @@
     </script>
   <script>
       $("#completed_list").click(function () {
+        $("#completed_div").css('display','none');
+        $("#reading_badge").css('display','none');
+        $("#completed_badge").css('display','block');
         var id_user = $('#id_user').val();
         var id_book = $('#id_book').val();
   
@@ -177,8 +186,7 @@
           },
           dataType: 'json',
           success: function (data) {
-              alert(data['status']);
-              window.location.reload();
+              //alert(data['status']);
           }
         });
   
