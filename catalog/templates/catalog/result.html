@@ -10,20 +10,34 @@
 </nav>
 
 <form method="get">
+  {% csrf_token %}
   <div class="well">
     <h4 style="margin-top: 0">Search</h4>
     <div class="row">
         {% for field in filter.form.visible_fields %}
+        {% ifequal field.label 'Language' %}
+
+          <div class="form-group col-sm-4 col-md-3" style="display:none;">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field|add_class:'form-control' }}
+        </div>
+
+        {% else %}
+
         <div class="form-group col-sm-4 col-md-3">
           <label for="{{ field.id_for_label }}">{{ field.label }}</label>
           {{ field|add_class:'form-control' }}
-  </div>
+        </div>
+        
+        {% endifequal %}
       {% endfor %}    
     </div>
-    <button type="submit" class="btn btn-dark">Search</button>
+    <button type="submit" class="btn btn-dark" onsubmit="addTranslation()">Search</button>
 
   </div>
 </form>
+
+
 
 {% if book_list %}
 <h4 style="margin-top: 10px;">Books</h4>
@@ -40,18 +54,9 @@
     {% endif %}       
   
 </div>
-<!--
-  {% if author_list %}
-  <ul>
-    {% for author in author_list %}
-      <li>
-        <a href="{{ auhtor.get_absolute_url }}">{{ author.last_name }}</a> ({{author.date_of_birth}} - {% if author.date_of_death %}{{author.date_of_death}}{% endif %})
-      </li>
-    {% endfor %}
-  </ul>
-  {% endif %}
-
-
--->
-  
+<script>
+  function addTranslation(){
+    $('#language').val() = $('#language').val();
+  }
+</script>  
 {% endblock %}

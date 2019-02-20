@@ -18,6 +18,8 @@ class GenreForm(ModelForm):
         fields = ['name']
 
 class BookForm(ModelForm):
+
+    pur_date = forms.DateField(widget=forms.DateInput(format='%m/%d/%Y', attrs={'class': 'datepicker'}),input_formats=('%m/%d/%Y', ))
     class Meta:
         model = Book
         fields = ['title', 'author','translator','language','translation','pub_year','condition','pur_date','genre','archive','summary']

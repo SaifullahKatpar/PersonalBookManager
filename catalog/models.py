@@ -27,16 +27,16 @@ class Book(models.Model):
     author = models.ForeignKey('Author',  related_name="author",on_delete=models.SET_NULL, null=True)
     translator = models.ForeignKey('Author', related_name="translator",on_delete=models.SET_NULL, null=True,blank=True)
     language = models.ForeignKey('Language',related_name="language", on_delete=models.SET_NULL, null=True)
-    translation = models.ForeignKey('Language', related_name="translation",on_delete=models.SET_NULL, null=True)
+    translation = models.ForeignKey('Language', related_name="translation",on_delete=models.SET_NULL, null=True,blank=True)
     
-    summary = models.TextField(max_length=1000, help_text='Enter a brief description of the book')
+    summary = models.TextField(max_length=1000, help_text='Enter a brief description of the book',null=True,blank=True)
     YEAR_CHOICES = [(r,r) for r in range(1800, datetime.date.today().year+1)]
     pub_year = models.IntegerField(('year'), choices=YEAR_CHOICES, default=datetime.datetime.now().year)
     # ManyToManyField used because genre can contain many books. Books can cover many genres.
     # Genre class has already been defined so we can specify the object above.
     genre = models.ManyToManyField(Genre, help_text='Select a genre for this book')
     condition = models.CharField(max_length=1,choices = CONDITIONS,blank=True, default='g')
-    pur_date = models.DateField(null=True, blank=True, help_text='Date in Year-Month-Date')
+    pur_date = models.DateField(null=True, blank=True)
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     archive =  models.BooleanField(default=False, help_text='In store')
     @property

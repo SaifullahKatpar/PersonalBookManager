@@ -1,7 +1,9 @@
 {% extends "base_generic.html" %}
 {% load widget_tweaks %}
 {% block content %}
-
+<script>
+  $('.datepicker').datepicker();
+</script>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb bg-dark">
       <li class="breadcrumb-item"><a href="{% url 'index' %}" class="text-white">Home</a></li>

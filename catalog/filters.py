@@ -12,6 +12,8 @@ class BookFilter(django_filters.FilterSet):
             'owner':['exact',],
             'condition':['exact',],
             'language':['exact',],
+            'translation':['exact',],
             'genre':['contains',],
 
             }
+        
