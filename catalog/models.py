@@ -36,7 +36,6 @@ class Book(models.Model):
     # Genre class has already been defined so we can specify the object above.
     genre = models.ManyToManyField(Genre, help_text='Select a genre for this book')
     condition = models.CharField(max_length=1,choices = CONDITIONS,blank=True, default='g')
-    pur_date = models.DateField(null=True, blank=True)
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     archive =  models.BooleanField(default=False, help_text='In store')
     @property
