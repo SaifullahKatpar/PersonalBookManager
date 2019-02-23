@@ -34,7 +34,9 @@
       </div>
     
       <div class="card-footer">
+        {% if book.owner %}
         <p class="card-text">  This book was published in {{book.pub_year}}.</p>
+        {% endif %}
         {% if book.owner %}
         <p class="card-text">  This book was purchased by {{book.owner}}</p>
         {% endif %}
