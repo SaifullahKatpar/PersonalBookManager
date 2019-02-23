@@ -38,12 +38,6 @@ class Book(models.Model):
     condition = models.CharField(max_length=1,choices = CONDITIONS,blank=True, default='g')
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     archive =  models.BooleanField(default=False, help_text='In store')
-    @property
-    def is_new(self):
-        if self.pur_date and self.pur_date+ timedelta(days=30) >= date.today()  :
-            return True
-        return False
-    new_arrival = property(is_new)
     class Meta:
         ordering = ['title','-pub_year']
 
