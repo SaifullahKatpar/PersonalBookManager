@@ -17,7 +17,7 @@
               <small class="text-info"><strong>{{book.language}}</strong>{% if book.translation %}/{{book.translation}}{% endif %}</small>
           </div>
           {% ifequal book.author.all.count 1 %}
-                    {{ book.author.all|first }}
+          <h5 class="card-subtitle mb-2"><a href="{% url 'author-detail' book.author.all.0.pk %}" class="card-link">{{ book.author.all|first }}</a></h5>         
           {% else %}
             {% for author in book.author.all %}
             {% if forloop.last %}
