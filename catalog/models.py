@@ -24,7 +24,7 @@ class Book(models.Model):
 
     # Foreign Key used because book can only have one author, but authors can have multiple books
     # Author as a string rather than object because it hasn't been declared yet in the file
-    author = models.ForeignKey('Author',  related_name="author",on_delete=models.SET_NULL, null=True)
+    author = models.ManyToManyField('Author', related_name="author", help_text='author(s)')
     translator = models.ForeignKey('Author', related_name="translator",on_delete=models.SET_NULL, null=True,blank=True)
     language = models.ForeignKey('Language',related_name="language", on_delete=models.SET_NULL, null=True)
     translation = models.ForeignKey('Language', related_name="translation",on_delete=models.SET_NULL, null=True,blank=True)
@@ -52,7 +52,12 @@ class Book(models.Model):
     def display_genre(self):
         """Create a string for the Genre. This is required to display genre in Admin."""
         return ', '.join(genre.name for genre in self.genre.all()[:3])
-    
+
+    def display_author(self):
+        """Create a string for the Author. This is required to display author in Admin."""
+        return ', '.join(author.first_name for author in self.author.all()[:3])
+
+    display_author.short_description = 'Author'
     display_genre.short_description = 'Genre'
 
 class Author(models.Model):

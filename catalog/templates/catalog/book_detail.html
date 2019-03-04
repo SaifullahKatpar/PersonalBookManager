@@ -16,8 +16,13 @@
               <h2 class="card-title">{{book.title}}</h2>
               <small class="text-info"><strong>{{book.language}}</strong>{% if book.translation %}/{{book.translation}}{% endif %}</small>
           </div>
+          {% for author in book.author.all %}
+          {% if forloop.last %}
+            ,
+          {% endif %}
+          <h5 class="card-subtitle mb-2"><a href="{% url 'author-detail' author.pk %}" class="card-link">{{author}}</a></h5>
+           {% endfor %}
 
-          <h5 class="card-subtitle mb-2"><a href="{% url 'author-detail' book.author.pk %}" class="card-link">{{book.author}}</a></h5>
             {% if book.translator %}
               <a href="{% url 'author-detail' book.translator.pk %}" class="card-link">{{book.translator}}</a> 
             {% endif %}          
@@ -34,11 +39,11 @@
       </div>
     
       <div class="card-footer">
-        {% if book.owner %}
+        {% if book.pub_year %}
         <p class="card-text">  This book was published in {{book.pub_year}}.</p>
         {% endif %}
         {% if book.owner %}
-        <p class="card-text">  This book was purchased by {{book.owner}}</p>
+        <p class="card-text">  This book is owned by {{book.owner}}.</p>
         {% endif %}
         {% if user.is_authenticated %}
           {% if book.archive %}
@@ -119,7 +124,6 @@
               else{
                 $("#wish_list_div").css('display','block');
                 $("#reading_div").css('display','block');
-                $("#completed_div").css('display','block');
 
               }
           }
