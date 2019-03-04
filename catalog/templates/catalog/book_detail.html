@@ -16,12 +16,16 @@
               <h2 class="card-title">{{book.title}}</h2>
               <small class="text-info"><strong>{{book.language}}</strong>{% if book.translation %}/{{book.translation}}{% endif %}</small>
           </div>
-          {% for author in book.author.all %}
-          {% if forloop.last %}
-            ,
-          {% endif %}
-          <h5 class="card-subtitle mb-2"><a href="{% url 'author-detail' author.pk %}" class="card-link">{{author}}</a></h5>
-           {% endfor %}
+          {% ifequal book.author.all.count 1 %}
+                    {{ book.author.all|first }}
+          {% else %}
+            {% for author in book.author.all %}
+            {% if forloop.last %}
+              ,
+            {% endif %}
+            <h5 class="card-subtitle mb-2"><a href="{% url 'author-detail' author.pk %}" class="card-link">{{author}}</a></h5>
+              {% endfor %}
+          {% endifequal %}
 
             {% if book.translator %}
               <a href="{% url 'author-detail' book.translator.pk %}" class="card-link">{{book.translator}}</a> 

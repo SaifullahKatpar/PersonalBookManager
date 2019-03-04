@@ -27,7 +27,11 @@
           <span style="color:green;">&#9679;</span>         
           {% endif%} 
         {% endif%} 
-        ({% for author in book.author.all %}{% if forloop.last %},{% endif %}{{author}}{% endfor %})
+        {% ifequal book.author.all.count 1 %}
+        <small>({{ book.author.all|first }})</small>
+        {% else %}
+        <small>({% for author in book.author.all %} {% if forloop.last %},{% endif %}{{author}}{% endfor %})</small>
+        {% endifequal %}        
       </li>
     {% endfor %}
   </ul>
