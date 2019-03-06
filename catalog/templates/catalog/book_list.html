@@ -19,7 +19,7 @@
   <ul class="list-group">
     {% for book in book_list %}
       <li class="list-group-item">
-        <a href="{{ book.get_absolute_url }}">{{ book.title }}</a> 
+        <a href="{{ book.get_absolute_url }}" >{{ book.title }}</a> 
         {% if user.is_authenticated %}
           {% if book.archive %}
           <span style="color:brown;">&#9679;</span>
@@ -27,11 +27,17 @@
           <span style="color:green;">&#9679;</span>         
           {% endif%} 
         {% endif%} 
-        {% ifequal book.author.all.count 1 %}
-        <small>({{ book.author.all|first }})</small>
-        {% else %}
-        <small>({% for author in book.author.all %} {% if forloop.last %},{% endif %}{{author}}{% endfor %})</small>
-        {% endifequal %}        
+        {% if book.author.all %}
+            {% ifequal book.author.all.count 1 %}
+            <small>({{ book.author.all|first }})</small>
+            {% else %}
+            <small>
+              (
+                {% for author in book.author.all %} {% if forloop.last %},{% endif %}{{author}}{% endfor %}
+              )
+            </small>
+            {% endifequal %}        
+        {% endif %}
       </li>
     {% endfor %}
   </ul>
