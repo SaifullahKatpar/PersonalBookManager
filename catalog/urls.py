@@ -34,3 +34,23 @@ urlpatterns += [
     path('add_to_completed/', views.add_to_completed, name='add_to_completed'),
     path('check_status/', views.check_status, name='check_status'),
 ]
+
+from rest_framework.urlpatterns import format_suffix_patterns
+urlpatterns += [
+    path('xbooks/', views.BookList.as_view()),
+    path('xbook/<int:pk>/', views.BookDetail.as_view()),
+
+    path('xauthors/', views.AuthorList.as_view()),
+    path('xauthor/<int:pk>/', views.AuthorDetail.as_view()),
+
+    path('xgenres/', views.GenreList.as_view()),
+    path('xgenre/<int:pk>/', views.GenreDetail.as_view()),
+
+    path('xlanguages/', views.LanguageList.as_view()),
+    path('xlanguage/<int:pk>/', views.LanguageDetail.as_view()),
+
+
+]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
+

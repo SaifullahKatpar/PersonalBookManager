@@ -1,5 +1,8 @@
 from django.contrib import admin
 from django.urls import path
+from rest_framework import routers
+from catalog import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,3 +32,4 @@ urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),
 ]
+

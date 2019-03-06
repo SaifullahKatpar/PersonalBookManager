@@ -1,6 +1,7 @@
 from django.shortcuts import render,HttpResponse
-from catalog.models import Book, Author,ReadingList,User
+from catalog.models import Book, Author, Genre, Language,    ReadingList,User
 from django.views import generic
+from rest_framework import generics
 from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
@@ -255,4 +256,50 @@ def check_status(request):
             'status': 'No Status'
             }
     return JsonResponse(data)
+
+
+
+from .serializers import BookSerializer, AuthorSerializer, GenreSerializer, LanguageSerializer
+
+class BookList(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+
+class BookDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+
+
+class AuthorList(generics.ListCreateAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+
+class AuthorDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+
+class GenreList(generics.ListCreateAPIView):
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
+
+
+class GenreDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Genre.objects.all()
+    serializer_class = GenreSerializer
+
+
+class LanguageList(generics.ListCreateAPIView):
+    queryset = Language.objects.all()
+    serializer_class = LanguageSerializer
+
+
+class LanguageDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Language.objects.all()
+    serializer_class = LanguageSerializer
+
+
 
